@@ -1,50 +1,28 @@
 require('./config/config');
 const express = require('express');
+const mongoose = require('mongoose');
 const app = express();
 
 const bodyparser = require('body-parser');
 
-app.use(bodyparser.urlencoded({extended: false}));
+app.use(bodyparser.urlencoded({ extended: false }));
 
 app.use(bodyparser.json());
 
-app.get('/usuario', (req, res) => {
-    res.json('Get Usuario');
-});
+app.use(require('./routes/usuario'));
+app.use(require('./routes/categoria'));
+app.use(require('./routes/producto'));
 
-app.get('/usuario/:id/:nombre', (req, res) => {
-    let id = req.params.id;
-    let nombre = req.params.nombre;
-    res.json({
-     id,
-     nombre 
+
+mongoose.connect('mongodb://localhost:27017/cafeteria', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    },
+    (err, resp) => {
+        if (err) throw err;
+
+        console.log('Base de datos ONLINE');
     });
-});
-
-app.post('/usuario', (req, res) => {
-    let nombre = req.body.nombre;
-    let edad = req.body.edad;
-
-    if(nombre === undefined || edad === undefined){
-        res.status(400).json({
-            ok: 'false',
-            err: 'Favor de completar todos los campos'
-        });
-    } else {
-    res.json({
-        nombre,
-        edad
-    });
-    };
-});
-
-app.put('/usuario', (req, res) => {
-    res.json('Put Usuario');
-});
-
-app.delete('/usuario', (req, res) => {
-    res.json('Delete Usuario');
-});
 
 app.listen(process.env.PORT, () => {
     console.log('Escuchando por el puerto', process.env.PORT);
