@@ -5,7 +5,9 @@ const Usuario = require('../models/usuario');
 const app = express();
 
 app.get('/usuario', (req, res) => {
-    Usuario.find({ estado: true })
+    Usuario.find({
+            estado: true
+        })
         .exec((err, usuarios) => {
             if (err) {
                 return res.status(400).json({
@@ -48,7 +50,11 @@ app.put('/usuario/:id', (req, res) => {
     let id = req.params.id;
     let body = _.pick(req.body, ['nombre', 'estado', 'role', 'img']);
 
-    Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' }, (err, usrDB) => {
+    Usuario.findByIdAndUpdate(id, body, {
+        new: true,
+        runValidators: true,
+        context: 'query'
+    }, (err, usrDB) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
@@ -63,29 +69,31 @@ app.put('/usuario/:id', (req, res) => {
 });
 
 app.delete('/usuario/:id', (req, res) => {
-    let id=req.params.id;
-    Usuario.deleteOne({_id: id},(err,resp)=>{
-        if(err){
+    let id = req.params.id;
+    Usuario.deleteOne({
+        _id: id
+    }, (err, resp) => {
+        if (err) {
             return res.status(400).json({
-                ok:false,
+                ok: false,
                 err
             });
         }
-        if(resp.deletedCount===0){
-     return res.status(400).json({
-         ok:false,
-         err:{
-             id,
-             msg:'usuario no encontrao'
-         }
-     })
+        if (resp.deletedCount === 0) {
+            return res.status(400).json({
+                ok: false,
+                err: {
+                    id,
+                    msg: 'usuario no encontrao'
+                }
+            })
         }
         return res.status(200).json({
-            ok:true,
+            ok: true,
             resp
         })
     });
     res.json('Delete Usuario');
 });
 
-module.exports = app;
+module.exports = app;  bvc
