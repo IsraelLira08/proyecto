@@ -20,6 +20,6 @@
     "mongoose-unique-validator": "^2.0.3",
     "node": "^12.13.0",
     "node-pre-gyp": "^0.14.0",
-    "underscore": "^1.9.1"
+    "underscore": "^1.12.1"
   }
 }
